@@ -48,7 +48,12 @@
   <ItemGroup>
      <Compile Include="Assets\Medieval\Collision.cs" />
      <Compile Include="Assets\Medieval\ComportementVillageois.cs" />
+     <Compile Include="Assets\Medieval\ComportementVillageoisGuerrier.cs" />
+     <Compile Include="Assets\Medieval\Initialisation.cs" />
+     <Compile Include="Assets\Medieval\RegardeDevant.cs" />
+     <None Include="Assets\Medieval\woman\Textures Anna.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+     <None Include="Assets\Medieval\kid girl\Textures Anna.txt" />
      <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
      <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
      <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />

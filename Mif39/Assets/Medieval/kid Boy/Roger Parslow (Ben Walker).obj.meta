@@ -1,0 +1,87 @@
+fileFormatVersion: 2
+guid: 08f7ec624d025a34a9bcb270f7b30bcc
+timeCreated: 1429195966
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: freddi_hightmore_.001_freddi_hightmore_.001_Tex_0599_0_dds_Tex_05_Tex_0599_0.dds
+    100002: freddi_hightmore_.002_freddi_hightmore_.003_Tex_0601_0_dds_Te_Tex_0686_0.dds
+    100004: freddi_hightmore__freddi_hightmore__Tex_0603_0_dds_Tex_06_Tex_0603_0.dds
+    100006: freddi_hightmore_fred_freddi_hightmore_fred_Tex_0601_0_dds_Tex_06_Tex_0601_0.dds
+    100008: //RootNode
+    400000: freddi_hightmore_.001_freddi_hightmore_.001_Tex_0599_0_dds_Tex_05_Tex_0599_0.dds
+    400002: freddi_hightmore_.002_freddi_hightmore_.003_Tex_0601_0_dds_Te_Tex_0686_0.dds
+    400004: freddi_hightmore__freddi_hightmore__Tex_0603_0_dds_Tex_06_Tex_0603_0.dds
+    400006: freddi_hightmore_fred_freddi_hightmore_fred_Tex_0601_0_dds_Tex_06_Tex_0601_0.dds
+    400008: //RootNode
+    2300000: freddi_hightmore_.001_freddi_hightmore_.001_Tex_0599_0_dds_Tex_05_Tex_0599_0.dds
+    2300002: freddi_hightmore_.002_freddi_hightmore_.003_Tex_0601_0_dds_Te_Tex_0686_0.dds
+    2300004: freddi_hightmore__freddi_hightmore__Tex_0603_0_dds_Tex_06_Tex_0603_0.dds
+    2300006: freddi_hightmore_fred_freddi_hightmore_fred_Tex_0601_0_dds_Tex_06_Tex_0601_0.dds
+    3300000: freddi_hightmore_.001_freddi_hightmore_.001_Tex_0599_0_dds_Tex_05_Tex_0599_0.dds
+    3300002: freddi_hightmore_.002_freddi_hightmore_.003_Tex_0601_0_dds_Te_Tex_0686_0.dds
+    3300004: freddi_hightmore__freddi_hightmore__Tex_0603_0_dds_Tex_06_Tex_0603_0.dds
+    3300006: freddi_hightmore_fred_freddi_hightmore_fred_Tex_0601_0_dds_Tex_06_Tex_0601_0.dds
+    4300000: freddi_hightmore_.001_freddi_hightmore_.001_Tex_0599_0_dds_Tex_05_Tex_0599_0.dds
+    4300002: freddi_hightmore_.002_freddi_hightmore_.003_Tex_0601_0_dds_Te_Tex_0686_0.dds
+    4300004: freddi_hightmore__freddi_hightmore__Tex_0603_0_dds_Tex_06_Tex_0603_0.dds
+    4300006: freddi_hightmore_fred_freddi_hightmore_fred_Tex_0601_0_dds_Tex_06_Tex_0601_0.dds
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

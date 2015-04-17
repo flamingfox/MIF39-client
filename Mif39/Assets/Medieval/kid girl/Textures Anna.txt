@@ -1,0 +1,4 @@
+Textures in the "Tex"
+place each texture in your material
+apply "alpha" in hair texture
+and is ready to play the animation
