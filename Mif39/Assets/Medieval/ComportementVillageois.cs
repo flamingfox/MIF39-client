@@ -1,16 +1,18 @@
-﻿
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System;
+
+
+// ACCELERER RALENTIR EN FONCTION DU TEMPS 
+// + mesh collider sur tout les perso 
 
 public class ComportementVillageois : MonoBehaviour {
 
 	// EN PARAMETRE : VITESSE , POSITION( x , y ,z ) serveur (vecteur de vector3 ?)
 	// On suppose que les positions d'initialisation des villageois sont prévues hors collision
 	float marcher = 1f ; 
-	float trot = 5f ;
-	float courir = 8f ;
+	float trot = 2f ;
+	float courir = 5f ;
 	float arret = 0f ;
 	float vitesse ; 
 	//float x , y , z ; 
@@ -20,7 +22,8 @@ public class ComportementVillageois : MonoBehaviour {
 	Renderer rend;
 	bool colli=false;
 	int c=0;
-
+	int compteurRot=0;
+	int r=0;
 
 	// Use this for initialization
 	void Start () 
@@ -44,57 +47,7 @@ public class ComportementVillageois : MonoBehaviour {
 		vitesse = arret; 
 		v = 0;
 	}
-
-
-	/*void OnCollisionEnter(UnityEngine.Collision collision)
-	{
-
-
-		bool bas = true;
-
-		if (collision.gameObject.name.Equals ("CourtYardTexturing") || collision.gameObject.name.Equals ("CourtYardTexturing_1") || collision.gameObject.name.Equals ("CourtYardTexturing_2") || collision.gameObject.name.Equals ("CourtYardTexturing_3") || collision.gameObject.name.Equals ("landscape_Green")|| collision.gameObject.name.Equals ("Green")  ) {
-			// bas gauche du box collider
-			Vector3 bgf = new Vector3 (transform.GetComponent<BoxCollider> ().bounds.center.x - transform.GetComponent<BoxCollider> ().bounds.extents.x, transform.GetComponent<BoxCollider> ().bounds.center.y - transform.GetComponent<BoxCollider> ().bounds.extents.y, transform.GetComponent<BoxCollider> ().bounds.center.z - transform.GetComponent<BoxCollider> ().bounds.extents.z);
-			Vector3 bdf = new Vector3 (bgf.x + 2 * transform.GetComponent<BoxCollider> ().bounds.extents.x, bgf.y, bgf.z);
-			Vector3 bgd = new Vector3 (bgf.x, bgf.y, bgf.z + 2 * transform.GetComponent<BoxCollider> ().bounds.extents.z);
-			Vector3 bdd = new Vector3 (bgf.x + 2 * transform.GetComponent<BoxCollider> ().bounds.extents.x, bgf.y, bgf.z + 2 * transform.GetComponent<BoxCollider> ().bounds.extents.z);
-				Debug.Log("box collider face bas gauche : "+bgf);
-			Debug.Log("box collider face bas droit : "+bdf);
-			Debug.Log("box collider arriere bas gauche : "+bgd);
-			Debug.Log("box collider arriere bas droit : "+bdd);
-
-			foreach (ContactPoint contact in collision.contacts) 
-			{
-				//print(" REsultat : " + (!floatEgal (contact.point, bgf) && !floatEgal (contact.point, bdf) && !floatEgal (contact.point, bgd) && !floatEgal (contact.point, bdd)));
-				if (!floatEgal (contact.point, bgf) && !floatEgal (contact.point, bdf) && !floatEgal (contact.point, bgd) && !floatEgal (contact.point, bdd)) {
-					//Debug.Log("point de collision : "+contact.point);
-					print("je suis dedans !! ") ; 
-					bas = false;
-				}
-				Debug.DrawRay(contact.point, contact.normal, Color.white); 	
-				Debug.Log("point de collision : "+contact.point);
-			}
-				
-
-			if (bas) // on a un contact des pieds avec le sol
-			{ 
-				print ("sol");
-				colli = false;
-			} 
-			else 
-			{ // on est soit face au sol, soit couchee sur le dos => remettre debout
-				print (" vraie collision");
-				colli = true;
-			}
-			// demi-tour + se remet debout => pb changement de sol !
-
-		} 
-		else // pas de contact avec le sol
-		{
-			colli = true;
-		}
-	}
-*/
+	
 	bool floatEgal(Vector3 p1, Vector3 p2)
 	{
 		print ("x   "+((Math.Round (p1.x, 1) == Math.Round (p2.x, 1)) + "......." + (Math.Round (p1.x, 1) == Math.Round (p2.x, 1) + 0.1) + "......." + (Math.Round (p1.x, 1) == Math.Round (p2.x, 1) - 0.1)));
@@ -108,13 +61,38 @@ public class ComportementVillageois : MonoBehaviour {
 	}
 
 
+	/* 
+	 ************************************************* UPDATE 
+	 */
+
 	void Update () 
 	{
+
 		//Debug.Log ("fils : " + transform.FindChild ("devant")); 
-		if ( ! transform.GetComponentInChildren < RegardeDevant >().yarienDevant ) return;
-		//if ( ! transform.GetChild(2).GetComponent < RegardeDevant >().yarienDevant ) return;
-		//if (!colli) {
-			if (v == 120) { // Eventuellement, ajouter une gestion de manière à ce que un enfant qui ait courru 30km passe à l'arret (energie)
+
+		if ((! transform.GetComponentInChildren < RegardeDevant > ().yarienDevant) && compteurRot == 0) { 
+
+			vitesse = marcher;
+			//r = UnityEngine.Random.Range (0, 180); 
+			r=180;
+			r=r/120;
+			transform.Rotate (r*transform.up);
+			compteurRot++;
+
+		} else if (compteurRot == 120) 
+		{
+			compteurRot=0;
+		}
+		else if(compteurRot!= 0)
+		{
+			transform.Rotate (r*transform.up);
+			compteurRot++;
+			transform.position += transform.forward * vitesse * Time.deltaTime;
+		}
+		else 
+		{
+			if (v == 500) {
+				// Eventuellement, ajouter une gestion de manière à ce que un enfant qui ait courru 30km passe à l'arret (energie)
 				if (type == 0) {// c'est un enfant, on gère le comportement de la vitesse
 					enfant ();
 				} else if (type == 1) {// c'est un adulte
@@ -157,8 +135,10 @@ public class ComportementVillageois : MonoBehaviour {
 				if (distance < 2)
 					transform.Rotate (transform.up);
 			}
+			transform.position += transform.forward * vitesse * Time.deltaTime;
+		}
 
-			/*	if (connaissance && (Vector3.Distance (transform.position, roiArthur.transform.position) <= 10)&& vu<60  ) {
+		/*	if (connaissance && (Vector3.Distance (transform.position, roiArthur.transform.position) <= 10)&& vu<60  ) {
 
 			if(vu==0){
 				transform.LookAt(roiArthur.transform.position);
@@ -172,7 +152,7 @@ public class ComportementVillageois : MonoBehaviour {
 		 {
 			transform.position += transform.forward*vitesse*Time.deltaTime ;
 		}	*/
-			transform.position += transform.forward * vitesse * Time.deltaTime;
+			
 	 
 	/*	else 
 		{
@@ -191,8 +171,6 @@ public class ComportementVillageois : MonoBehaviour {
 		if (rand < 15) 
 			vitesse = arret;
 		else if (rand < 65 && rand > 15)
-			vitesse = marcher;
-		else if (rand < 85 && rand > 65)
 			vitesse = trot;
 		else 
 			vitesse = courir;

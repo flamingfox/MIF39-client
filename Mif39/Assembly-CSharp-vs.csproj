@@ -46,7 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Medieval\Collision.cs" />
+     <Compile Include="Assets\Medieval\CollisionVilla.cs" />
      <Compile Include="Assets\Medieval\ComportementVillageois.cs" />
      <Compile Include="Assets\Medieval\ComportementVillageoisGuerrier.cs" />
      <Compile Include="Assets\Medieval\Initialisation.cs" />

@@ -8,11 +8,16 @@ public class RegardeDevant : MonoBehaviour {
 		yarienDevant = true;
 	}
 	
-	void OnCollisionEnter(UnityEngine.Collision collision)
+	void OnCollisionEnter(Collision collision)
 	{
+		
+		Debug.Log(" je rentre dans un truc" );
 		yarienDevant = false;
 	}
-	void OnCollisionExit (UnityEngine.Collision collision) {
+
+
+	void OnCollisionExit (Collision collision) {
 		yarienDevant = true;
 	}
+
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Collision : MonoBehaviour {
+public class CollisionVilla : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
