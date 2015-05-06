@@ -14,12 +14,12 @@ public class Initialisation : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// a changer car sera rempli par le serveur
-		posVillageois = new Vector3[100]; 
+		posVillageois = new Vector3[10]; 
 		int k = 0;
-		for (int i = 0; i < 100; i=i+10) {
-			for (int j = 0; j < 100; j= j+10) {
+		for (int i = 0; i < 20; i=i+10) {
+			for (int j = 0; j < 50; j= j+10) {
 				posVillageois[k].x = i;
-				posVillageois[k].y = 35;
+				posVillageois[k].y = 50;
 				posVillageois[k].z = j;
 				k++;
 			}
@@ -30,14 +30,14 @@ public class Initialisation : MonoBehaviour {
 
 
 		// On crée N gameObject correspondant aux villageois
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 100; i++) {
 			GameObject temp = new GameObject() ; 
 
 
-			int comp =1;//Random.Range (0, 3);
-			int sex = 0;//Random.Range (0, 2);
+			int comp =Random.Range(0, 2);//Random.Range (0, 3);
+			int sex=Random.Range(0, 2);
 			if (comp == 0) 
-			{// c'est un enfante
+			{// c'est un enfant
 				if(sex==0){
 					temp = (GameObject) Instantiate(kidgirl,posVillageois[i], Quaternion.identity) ; 
 				}
@@ -63,7 +63,7 @@ public class Initialisation : MonoBehaviour {
 			temp.AddComponent<ComportementVillageois>() ; 
 
 			//Temporaire pour positionner le villageoi devant la caméra
-			temp.transform.position = new Vector3(40, 32, 90);
+			//temp.transform.position = new Vector3(40, 32, 90);
 
 		}
 	}
