@@ -9,6 +9,9 @@ public class test : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		Console.WriteLine("start");
+
 		TcpSocket ts = new TcpSocket ();
 		
 		ts.ConnectTo ("192.168.1.33", 3000);

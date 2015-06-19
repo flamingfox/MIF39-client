@@ -4,10 +4,13 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-class MainClass : MonoBehaviour
+class MainClass
 {
 	// Use this for initialization
 	void Start () {
+
+		Console.WriteLine("start");
+
 		TcpSocket ts = new TcpSocket ();
 		
 		ts.ConnectTo ("192.168.1.33", 3000);

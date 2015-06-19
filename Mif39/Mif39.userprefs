@@ -1,11 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Medieval\ComportementVillageois.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Network\Main.cs">
     <Files>
-      <File FileName="Assets\Medieval\ComportementVillageois.cs" Line="7" Column="39" />
-      <File FileName="Assets\Medieval\CollisionVilla.cs" Line="11" Column="66" />
-      <File FileName="Assets\Medieval\Initialisation.cs" Line="50" Column="51" />
-      <File FileName="Assets\Medieval\RegardeDevant.cs" Line="22" Column="2" />
+      <File FileName="Assets\Network\test.cs" Line="13" Column="3" />
+      <File FileName="Assets\Network\Main.cs" Line="10" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
