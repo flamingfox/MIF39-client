@@ -4,19 +4,21 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-class MainClass
+public class main : MonoBehaviour
 {
-	// Use this for initialization
-	void Start () {
+	public void connexion () {
 
-		Console.WriteLine("start");
+		/*print("start");
 
 		TcpSocket ts = new TcpSocket ();
 		
 		ts.ConnectTo ("192.168.1.33", 3000);
 		
-		ts.sendMessage ("0");
-		ts.sendMessage ("0");
+		ts.sendMessageString ("1");
+		ts.sendMessageString ("2");
+
+		//Byte[] message = ;
+		//ts.sendMessageBytes();
 		
 		Message m = new Message ();
 		
@@ -34,12 +36,6 @@ class MainClass
 		
 		
 		
-		Console.WriteLine ("Hello World!");
+		Console.WriteLine ("Hello World!");*/
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
 }

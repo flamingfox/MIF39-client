@@ -1,31 +1,37 @@
+using UnityEngine;
 using System;
 
 public class Message
 {
-	protected Header h;
-	protected HeaderContainer hc;
+	protected HeaderContainer h;
 	protected Asset a;
 
 	protected string typeOfData;
 
 	public Message (){
-		h = null;
-		hc = null;
+		h = new HeaderContainer();
 		a = null;
 
 		typeOfData = "";
 	}
 
+	public HeaderContainer H {
+		get {
+			return h;
+		}
+	}
+
+	public Asset A {
+		get {
+			return a;
+		}
+	}
+
 	public void loadFromTcp (TcpSocket ts)
 	{
 		h.loadFromTcp (ts);
-		hc.loadFromTcp (ts);
-		loadAssetFromTcp (ts);
-	}
 
-	private void loadAssetFromTcp (TcpSocket ts){
-		if (hc.getName().Equals ("Mesh")) {
-			a = Mesh.loadFromTcp(ts);
-		}
+		a = Asset.loadFromTcp (ts, h);
+
 	}
 }

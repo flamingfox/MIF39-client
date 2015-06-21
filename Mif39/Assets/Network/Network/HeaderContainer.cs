@@ -1,3 +1,4 @@
+using UnityEngine;
 using System;
 using System.IO;
 
@@ -24,34 +25,31 @@ public class HeaderContainer : Header
 	{
 
 		string sid = new string (br.ReadChars (36 + 2));
-		System.Console.WriteLine ("sid :" + sid);
+		Debug.Log ("sid :" + sid);
 
 		System.Guid id = new System.Guid (sid);
-		System.Console.WriteLine ("id :" + id);
+		Debug.Log ("id :" + id);
 
 		BinaryLoader.loadAsciiFromBinary (br);
 		BinaryLoader.loadAsciiFromBinary (br);
 
 		//name = new string( br.ReadChars(2) );
-		//System.Console.WriteLine("name : " + name);
+		//Debug.Log("name : " + name);
 
 		dataSize = br.ReadInt32 ();
-		System.Console.WriteLine ("dataSize : " + dataSize);
+		Debug.Log ("dataSize : " + dataSize);
 		
-		System.Console.WriteLine ("dataSize : " + new string (br.ReadChars (2)));
+		Debug.Log ("dataSize : " + new string (br.ReadChars (2)));
 	}*/
 
 	public override void loadFromTcp (TcpSocket ts)
 	{
-
-		System.Console.WriteLine ();
-		System.Console.WriteLine ("***** HeaderContainer ******");
-		System.Console.WriteLine ();
+		Debug.Log ("***** HeaderContainer ******");
 
 		base.loadFromTcp (ts);
 		
-		dataSize = ts.receiveMessageInt32 ();
-		System.Console.WriteLine ("dataSize : " + dataSize);
-		System.Console.WriteLine ();
+		dataSize = ts.receiveMessageInt ();
+
+		Debug.Log ("HeaderContainer : "+getId()+"; "+getName()+"; "+getDataSize());
 	}
 }

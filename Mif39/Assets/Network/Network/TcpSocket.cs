@@ -1,10 +1,14 @@
+using UnityEngine;
 using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-public class TcpSocket
+public class TcpSocket : MonoBehaviour
 {
+	public string ipAdresse;
+	public int port = 3000;
+
 	private TcpClient tc = new TcpClient ();
 
 	NetworkStream ns;
@@ -12,7 +16,7 @@ public class TcpSocket
 
 	long tailleMessageRestant = 0;
 
-	public TcpSocket ()	{}
+	protected TcpSocket ()	{}
 
 	~ TcpSocket(){
 		br.Close ();
@@ -21,46 +25,85 @@ public class TcpSocket
 	}
 
 	public void ConnectTo(string adress, int port){
-		tc.Connect(adress, port);
 
-		ns = tc.GetStream ();
-		
-		br = new BinaryReader (ns);
+		if (!tc.Connected) {
+			ipAdresse = adress;
+			this.port = port;
+
+			tc.Connect (ipAdresse, port);
+
+			ns = tc.GetStream ();
+
+			br = new BinaryReader (ns);
+		}
 	}
 
-	public void sendMessage(string message){
-		
-		System.Console.WriteLine ("envois de "+ message );
-		
+	public void razCompteur(){
+		tailleMessageRestant = 0;
+	}
+
+	public void sendMessageString(string message){
+
+		if (!ns.CanWrite) {
+			tc.Close();
+			ConnectTo(ipAdresse, port);
+		}
+
+		Debug.Log ("envois de "+ message );
+
 		// Translate the passed message into ASCII and store it as a Byte array.
 		Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 		
 		Byte[] size = BitConverter.GetBytes( data.Length );
 		
 		// Send the message to the connected TcpServer. 
+		//ns.BeginWrite(data, 0, sizeof(int), 
+
 		ns.Write(size, 0, sizeof(int));
+		ns.Flush ();
 		ns.Write(data, 0, data.Length);
+		ns.Flush ();
 		
-		System.Console.WriteLine ("fin envois de "+ message );
-		System.Console.WriteLine ();
+		//Debug.Log ("fin envois de "+ message );
+		
+	}
+
+	public void sendMessageBytes(Byte[] message){
+
+		if (!ns.CanWrite) {
+			tc.Close();
+			ConnectTo(ipAdresse, port);
+		}
+
+		Debug.Log ("envois du message en Bytes");
+		
+		Byte[] size = BitConverter.GetBytes( message.Length );
+		
+		// Send the message to the connected TcpServer. 
+		ns.Write(size, 0, sizeof(int));
+		ns.Flush ();
+		ns.Write(message, 0, message.Length);
+		ns.Flush ();
+		//Debug.Log ("fin envois du message en Bytes");
 		
 	}
 
 	public Byte[] receiveMessageAll(){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
-
+			Debug.Log("debut reception");
+			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
 		}
 
-		Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant);
 
 		// Read the first batch of the TcpServer response bytes.
 		Byte[] data = br.ReadBytes ((int)tailleMessageRestant);
 
 		tailleMessageRestant -= data.Length;
+
 
 		return data;
 	}
@@ -68,34 +111,38 @@ public class TcpSocket
 	public Byte[] receiveMessageBytes(long nbByte){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
 		Byte[] data = br.ReadBytes ((int)nbByte);
 
 		tailleMessageRestant -= data.Length;
-		
+
+		Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant);
+
 		return data;
 	}
 
 	public System.Guid receiveMessageGuid(){
 
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
 		}
 
 		string sid = new string (receiveMessageChars (36+2));
 
-		System.Console.WriteLine("sid : " + sid);
+		//Debug.Log("sid : " + sid);
 		
 		System.Guid data = new System.Guid (sid);
+
+		Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant);
 
 		return data;
 	}
@@ -103,12 +150,238 @@ public class TcpSocket
 	public bool receiveMessageBool ()
 	{
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
 		}
 
+		// Read the first batch of the TcpServer response bytes.
+		bool data = br.ReadBoolean();
+		
+		tailleMessageRestant -= sizeof(bool);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public short receiveMessageShort(){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		short data = br.ReadInt16();
+		
+		tailleMessageRestant -= sizeof(short);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public ushort receiveMessageUShort ()
+	{
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		ushort data = br.ReadUInt16();
+		
+		tailleMessageRestant -= sizeof(ushort);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public int receiveMessageInt(){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		int data = br.ReadInt32();
+		
+		tailleMessageRestant -= sizeof(int);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public uint receiveMessageUInt ()
+	{
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		uint data = br.ReadUInt32();
+		
+		tailleMessageRestant -= sizeof(uint);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public long receiveMessageLong(){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		long data = br.ReadInt64();
+		
+		tailleMessageRestant -= sizeof(long);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public ulong receiveMessageULong(){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		ulong data = br.ReadUInt64();
+		
+		tailleMessageRestant -= sizeof(ulong);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public char receiveMessageChar(){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		Char data = br.ReadChar();
+		
+		tailleMessageRestant -= 1;
+		//tailleMessageRestant -= sizeof(char)*nb;
+		
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant);
+		
+		return data;
+	}
+
+	public char[] receiveMessageChars(int nb){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		char[] data = br.ReadChars(nb);
+		
+		tailleMessageRestant -= 1*nb;
+		//tailleMessageRestant -= sizeof(char)*nb;
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant);
+
+		return data;
+	}
+
+	public double receiveMessageDouble(){
+		
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		double data = br.ReadDouble();
+		
+		tailleMessageRestant -= sizeof(double);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	public float receiveMessageFloat ()
+	{
+		if (tailleMessageRestant <= 0) {
+			Debug.Log("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log("tailleMessageRestant: "+tailleMessageRestant);
+		}
+		
+		// Read the first batch of the TcpServer response bytes.
+		float data = br.ReadSingle();
+		
+		tailleMessageRestant -= sizeof(float);
+
+		//Debug.Log ("tailleMessageRestant: "+ tailleMessageRestant+"; result : "+data);
+
+		return data;
+	}
+
+	/************************************/
+	/*									*/
+	/************************************/
+
+
+	static public Byte[] guidToByte(System.Guid toConvert){
+		
+		Byte[] data;
+
+		// Translate the passed message into ASCII and store it as a Byte array.
+		data = System.Text.Encoding.ASCII.GetBytes(toConvert.ToString());
+		
+		return data;
+	}
+	
+	/*public Byte[] boolToByte (bool toConvert)
+	{
+		if (tailleMessageRestant <= 0) {
+			Debug.Log ("debut reception");
+			
+			tailleMessageRestant = br.ReadInt32();
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
+		}
+		
 		// Read the first batch of the TcpServer response bytes.
 		bool data = br.ReadBoolean();
 		
@@ -116,14 +389,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public Int16 receiveMessageInt16(){
+	
+	public Byte[] int16ToByte(Int16 toConvert){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -133,14 +406,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public UInt16 receiveMessageUInt16 ()
+	
+	public Byte[] uInt16ToByte (UInt16 toConvert)
 	{
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -150,14 +423,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public Int32 receiveMessageInt32(){
+	
+	public Byte[] int32ToByte(Int32 toConvert){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -167,14 +440,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public UInt32 receiveMessageUInt32 ()
+	
+	public Byte[] uInt32ToByte (UInt32 toConvert)
 	{
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -184,14 +457,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public Int64 receiveMessageInt64(){
+	
+	public Byte[] int64ToByte(Int64 toConvert){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -201,14 +474,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public UInt64 receiveMessageUInt64(){
+	
+	public Byte[] uInt64ToByte(UInt64 toConvert){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -218,14 +491,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public Char[] receiveMessageChars(int nb){
+	
+	public Byte[] charsToByte(char[] toConvert){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -235,14 +508,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public Double receiveMessageDouble(){
+	
+	public Byte[] doubleToByte(double toConvert){
 		
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -252,14 +525,14 @@ public class TcpSocket
 		
 		return data;
 	}
-
-	public float receiveMessageFloat ()
+	
+	public Byte[] floatToByte (float toConvert)
 	{
 		if (tailleMessageRestant <= 0) {
-			System.Console.WriteLine ("debut reception");
+			Debug.Log ("debut reception");
 			
 			tailleMessageRestant = br.ReadInt32();
-			Console.WriteLine ("tailleMessageRestant: {0}", tailleMessageRestant);
+			Debug.Log ("tailleMessageRestant: {0}", tailleMessageRestant);
 		}
 		
 		// Read the first batch of the TcpServer response bytes.
@@ -268,5 +541,5 @@ public class TcpSocket
 		tailleMessageRestant -= 32;
 		
 		return data;
-	}
+	}*/
 }

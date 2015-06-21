@@ -1,9 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Network\Main.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Network\test.cs">
     <Files>
-      <File FileName="Assets\Network\test.cs" Line="13" Column="3" />
-      <File FileName="Assets\Network\Main.cs" Line="10" Column="17" />
+      <File FileName="Assets\Network\test.cs" Line="24" Column="26" />
+      <File FileName="Assets\Network\Network\TcpSocket.cs" Line="58" Column="3" />
+      <File FileName="Assets\Network\Asset\Image.cs" Line="36" Column="37" />
+      <File FileName="Assets\Network\Asset\Mesh.cs" Line="182" Column="10" />
+      <File FileName="Assets\Network\Network\Message.cs" Line="18" Column="2" />
+      <File FileName="Assets\Network\Asset\Asset.cs" Line="39" Column="153" />
+      <File FileName="..\..\..\Users\Kitsune\AppData\Local\Temp\$objreadercsharpv3_694.cs" Line="123" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

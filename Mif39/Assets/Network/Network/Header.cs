@@ -1,3 +1,4 @@
+using UnityEngine;
 using System;
 using System.IO;
 
@@ -29,34 +30,32 @@ public class Header
 	/*public void loadFromBinary(BinaryReader br){
 		
 		string sid = new string( br.ReadChars(36+2) );
-		System.Console.WriteLine("sid :" + sid);
+		Debug.Log("sid :" + sid);
 		
 		System.Guid id = new System.Guid (sid);
-		System.Console.WriteLine("id :" + id);
+		Debug.Log("id :" + id);
 		
 		BinaryLoader.loadAsciiFromBinary (br);
 		BinaryLoader.loadAsciiFromBinary (br);
 		
 		//name = new string( br.ReadChars(2) );
-		//System.Console.WriteLine("name : " + name);
+		//Debug.Log("name : " + name);
 		
-		System.Console.WriteLine("dataSize : " + new string(br.ReadChars(2)) );
+		Debug.Log("dataSize : " + new string(br.ReadChars(2)) );
 	}*/
 	
 	public virtual void loadFromTcp (TcpSocket ts)
 	{
 
+		//Debug.Log("***** Header ******");
 
-		System.Console.WriteLine("***** Header ******");
-
-		System.Guid id = ts.receiveMessageGuid();
-		System.Console.WriteLine("id : " + id);
-		System.Console.WriteLine("id : " + id.ToString());
+		id = ts.receiveMessageGuid();
+		//Debug.Log("id : " + id);
 		
-		long nameLenght = ts.receiveMessageInt64 ();
-		System.Console.WriteLine("nameLength : " + nameLenght);
+		long nameLenght = ts.receiveMessageLong ();
+		//Debug.Log("nameLength : " + nameLenght);
 		
 		name = new string( ts.receiveMessageChars((int)nameLenght) );
-		System.Console.WriteLine("name : " + name);
+		Debug.Log ("header : "+getId()+"; "+getName());
 	}
 }

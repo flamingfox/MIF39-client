@@ -56,11 +56,12 @@
      <Compile Include="Assets\Network\Asset\Mesh.cs" />
      <Compile Include="Assets\Network\BinaryLoader.cs" />
      <Compile Include="Assets\Network\Main.cs" />
-     <Compile Include="Assets\Network\MainMenu.cs" />
      <Compile Include="Assets\Network\Network\Header.cs" />
      <Compile Include="Assets\Network\Network\HeaderContainer.cs" />
      <Compile Include="Assets\Network\Network\Message.cs" />
      <Compile Include="Assets\Network\Network\TcpSocket.cs" />
+     <Compile Include="Assets\Network\Utilities\MonoBehaviourExtended.cs" />
+     <Compile Include="Assets\Network\Utilities\Singleton.cs" />
      <Compile Include="Assets\Network\test.cs" />
      <None Include="Assets\Medieval\woman\Textures Anna.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
